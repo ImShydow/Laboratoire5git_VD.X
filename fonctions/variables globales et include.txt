@@ -1,0 +1,53 @@
+/****************** Liste des INCLUDES ****************************************/
+#include <xc.h>
+#include <stdbool.h>  // pour l'utilisation du type bool
+#include <conio.h>
+#include "Lcd4Lignes.h"
+#include <stdlib.h> // pour utiliser RAND, la méthode qui donne un chiffre aléatoire, avec la syntaxe suivante : (rand() % 10) va donner un chiffre aléatoire entre 0 et 9
+#include <stdio.h>
+#include "serie.h"
+#include <string.h>
+
+
+
+
+/********************** CONSTANTES *******************************************/
+#define NB_LIGNE 4  //afficheur LCD 4x20
+#define NB_COL 20
+#define NB_ALIENS 4 //nombre d'aliens qu'on mettra sur chaque ligne. On pourra ainsi facilement changer la difficulté du jeu
+#define AXE_X 7  //canal analogique de l'axe x de la manette
+#define PORT_FEU PORTBbits.RB1 //sw de la manette
+#define DELAI_TMR0 0x0BDC // Vitesse du jeu (temps de déplacement des aliens):  0x0BDC = 2s, 0x85EE = 1s
+
+
+
+/********************** PROTOTYPES *******************************************/
+void initialisation(void);
+void interrupt high_isr(void);
+char getAnalog(char canal);
+void affichePerdu(int pts);
+bool perdu(void);
+void feu(char x, int* pts);
+void deplace(char* x);
+void afficheAliens(void);
+void nouveauxAliens(void);
+
+
+/****************** VARIABLES GLOBALES ****************************************/
+char m_aliens[NB_LIGNE][NB_COL+1]= //Ce tableau à 2 dimensions indique où sont les aliens sur l'écran. 
+{
+    {"      *      *      "},
+    {"                    "},
+    {"                    "},
+    {"                    "}
+};
+//chaque ligne se termine par '\0'
+/*Exemple d'initialisation: 
+{
+    {"      *      *      "},
+    {"                    "},
+    {"                    "},
+    {"                    "}
+};*/
+ 
+bool m_tempsDAfficher = false; //Cette variable est mise à true par l'interruption du Timer0 à toutes les 2 secondes
