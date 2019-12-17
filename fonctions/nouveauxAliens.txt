@@ -1,0 +1,29 @@
+void nouveauxAliens(void)
+{
+    bool verifie[NB_COL] = {false};
+    char counter=0;
+    char random=0;
+    int cAlien =0;
+    int k =0;
+    for(int i=5; i>1;i--)//doit partir du bas pour empêcger un bug de LCD
+    {
+        strcpy(m_aliens[i-2],m_aliens[i-3]);
+    }
+    for(int v=0; v<20; v++)
+    {
+        m_aliens[0][v] = ' ';
+    }
+    
+    while(k<NB_ALIENS)
+    {
+        random = rand() %20;
+        if(((m_aliens[0][random]) == ' ') && (verifie[random] == false))
+        {
+            
+            m_aliens[0][random] = '*';
+            verifie[random] = true;
+            k++;
+            
+        }
+        
+    }
