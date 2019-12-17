@@ -1,0 +1,20 @@
+bool perdu(void)
+{
+    int counter =0;
+    for(int i=0; i<20;i++)
+    {
+        if(m_aliens[3][i] == '*')
+        {
+            return true;
+        }
+        if(m_aliens[3][i] == ' ')
+        {
+            counter++;
+        }
+    }
+    if(counter == 20)
+    {
+        return false; 
+    }
+    
+}
